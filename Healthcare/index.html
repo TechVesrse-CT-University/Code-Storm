@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoHealth - Automatic Health Monitoring System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header with animated logo -->
+        <header class="slide-down">
+            <div class="logo">
+                <i class="fas fa-heartbeat pulse"></i>
+                <h1>AutoHealth</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                    <li><a href="#symptom-checker" class="nav-link">Symptom Checker</a></li>
+                    <li><a href="#health-metrics" class="nav-link">Health Metrics</a></li>
+                    <li><a href="#hospital-finder" class="nav-link">Hospital Finder</a></li>
+                    <li><a href="#reminders" class="nav-link">Reminders</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section fade-in">
+                <h2>Your Health Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card scale-hover">
+                        <h3>Current Health Status</h3>
+                        <div id="health-status" class="status-indicator">
+                            <div class="pulse-dot"></div>
+                            <span>Analyzing...</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card scale-hover">
+                        <h3>Recent Metrics</h3>
+                        <div class="metrics-display">
+                            <div class="metric">
+                                <span>BMI: </span><span id="current-bmi">--</span>
+                            </div>
+                            <div class="metric">
+                                <span>BP: </span><span id="current-bp">--/--</span>
+                            </div>
+                            <div class="metric">
+                                <span>Glucose: </span><span id="current-glucose">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card scale-hover">
+                        <h3>Quick Actions</h3>
+                        <div class="quick-actions">
+                            <button class="btn pulse" id="emergency-btn">Emergency Help</button>
+                            <button class="btn" id="add-reminder-btn">Add Reminder</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Symptom Checker Section -->
+            <section id="symptom-checker" class="section hidden fade-in">
+                <h2>Symptom Checker</h2>
+                <div class="symptom-checker-container">
+                    <div class="input-section slide-left">
+                        <textarea id="symptom-input" placeholder="Describe your symptoms here... (e.g., headache, fever, cough)"></textarea>
+                        <button id="analyze-btn" class="btn pulse">Analyze Symptoms</button>
+                    </div>
+                    <div class="result-section slide-right hidden">
+                        <h3>Possible Conditions</h3>
+                        <div id="disease-results"></div>
+                        <div id="precaution-results" class="precautions"></div>
+                        <div class="action-buttons">
+                            <button id="find-hospital-btn" class="btn">Find Nearby Hospital</button>
+                            <button id="book-appointment-btn" class="btn">Book Appointment</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Health Metrics Section -->
+            <section id="health-metrics" class="section hidden fade-in">
+                <h2>Health Metrics Tracker</h2>
+                <div class="metrics-container">
+                    <div class="metric-form slide-up">
+                        <h3>Record New Metrics</h3>
+                        <form id="metrics-form">
+                            <div class="form-group">
+                                <label for="weight">Weight (kg)</label>
+                                <input type="number" id="weight" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="height">Height (cm)</label>
+                                <input type="number" id="height" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="systolic">Blood Pressure (mmHg)</label>
+                                <div class="bp-input">
+                                    <input type="number" id="systolic" placeholder="Systolic" required>
+                                    <span>/</span>
+                                    <input type="number" id="diastolic" placeholder="Diastolic" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="glucose">Blood Glucose (mg/dL)</label>
+                                <input type="number" id="glucose" required>
+                            </div>
+                            <button type="submit" class="btn">Save Metrics</button>
+                        </form>
+                    </div>
+                    <div class="metric-history slide-up">
+                        <h3>Metric History</h3>
+                        <div class="history-chart" id="bmi-chart"></div>
+                        <div class="history-chart" id="bp-chart"></div>
+                        <div class="history-chart" id="glucose-chart"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hospital Finder Section -->
+            <section id="hospital-finder" class="section hidden fade-in">
+                <h2>Hospital Finder</h2>
+                <div class="hospital-finder-container">
+                    <div class="map-container slide-left">
+                        <div id="map"></div>
+                        <div class="map-controls">
+                            <button id="current-location-btn" class="btn">Use My Location</button>
+                            <input type="text" id="location-input" placeholder="Enter location">
+                            <button id="search-hospitals-btn" class="btn">Search Hospitals</button>
+                        </div>
+                    </div>
+                    <div class="hospital-list slide-right">
+                        <h3>Nearby Hospitals</h3>
+                        <div id="hospital-results"></div>
+                        <div class="appointment-section hidden" id="appointment-section">
+                            <h4>Book Appointment</h4>
+                            <form id="appointment-form">
+                                <div class="form-group">
+                                    <label for="appointment-date">Date</label>
+                                    <input type="date" id="appointment-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointment-time">Time</label>
+                                    <input type="time" id="appointment-time" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="patient-name">Your Name</label>
+                                    <input type="text" id="patient-name" required>
+                                </div>
+                                <div class="payment-section">
+                                    <h5>Payment</h5>
+                                    <div class="payment-options">
+                                        <label><input type="radio" name="payment" value="card" checked> Credit Card</label>
+                                        <label><input type="radio" name="payment" value="upi"> UPI</label>
+                                        <label><input type="radio" name="payment" value="netbanking"> Net Banking</label>
+                                    </div>
+                                    <button type="submit" class="btn" id="pay-now-btn">Pay & Confirm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reminders Section -->
+            <section id="reminders" class="section hidden fade-in">
+                <h2>Health Reminders</h2>
+                <div class="reminders-container">
+                    <div class="add-reminder slide-left">
+                        <h3>Add New Reminder</h3>
+                        <form id="reminder-form">
+                            <div class="form-group">
+                                <label for="reminder-title">Title</label>
+                                <input type="text" id="reminder-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reminder-desc">Description</label>
+                                <textarea id="reminder-desc"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="reminder-date">Date & Time</label>
+                                <input type="datetime-local" id="reminder-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reminder-repeat">Repeat</label>
+                                <select id="reminder-repeat">
+                                    <option value="none">Never</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn">Add Reminder</button>
+                        </form>
+                    </div>
+                    <div class="reminder-list slide-right">
+                        <h3>Your Reminders</h3>
+                        <div id="reminders-list"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Billing Section -->
+<section id="billing" class="section hidden fade-in">
+    <h2>Billing & Payments</h2>
+    <div class="billing-container">
+        <div class="billing-summary slide-left">
+            <h3>Payment History</h3>
+            <div id="payment-history">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <div class="billing-details slide-right">
+            <h3>Upcoming Payments</h3>
+            <div id="upcoming-payments">
+                <div class="payment-item">
+                    <div class="payment-info">
+                        <span class="payment-title">Doctor Consultation</span>
+                        <span class="payment-date">Due: 2023-06-15</span>
+                    </div>
+                    <div class="payment-amount">$50.00</div>
+                    <button class="btn pay-now-btn">Pay Now</button>
+                </div>
+            </div>
+            
+            <div class="payment-methods">
+                <h3>Payment Methods</h3>
+                <div id="saved-payment-methods">
+                    <div class="payment-method">
+                        <i class="fas fa-credit-card"></i>
+                        <span>VISA **** **** **** 4242</span>
+                        <button class="btn secondary">Edit</button>
+                    </div>
+                    <button class="btn" id="add-payment-method-btn">
+                        <i class="fas fa-plus"></i> Add Payment Method
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Footer -->
+        <footer class="slide-up">
+            <p > AutoHealth - Automatic Health Monitoring System</p>
+            <p>Made by Code Storm</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="emergency-modal" class="modal hidden">
+        <div class="modal-content scale-in">
+            <span class="close-modal">&times;</span>
+            <h2>Emergency Assistance</h2>
+            <p>We've detected this may be an emergency. Please call emergency services immediately.</p>
+            <div class="emergency-numbers">
+                <button class="btn emergency-btn pulse" id="call-ambulance">
+                    <i class="fas fa-ambulance"></i> Call Ambulance (108)
+                </button>
+                <button class="btn emergency-btn pulse" id="call-emergency">
+                    <i class="fas fa-phone-alt"></i> Emergency (112)
+                </button>
+            </div>
+            <p>We've located the nearest hospital to you and are preparing your medical information for them.</p>
+        </div>
+    </div>
+
+    <div id="payment-modal" class="modal hidden">
+        <div class="modal-content scale-in">
+            <span class="close-modal">&times;</span>
+            <h2>Payment Processing</h2>
+            <div id="payment-loader" class="loader"></div>
+            <p id="payment-status">Processing your payment...</p>
+            <div id="payment-success" class="hidden">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h3>Payment Successful!</h3>
+                <p>Your appointment has been confirmed.</p>
+                <button class="btn" id="view-appointment-btn">View Appointment Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/disease-database.js"></script>
+    <script src="js/user-data.js"></script>
+    <script src="js/healthcare-ai.js"></script>
+    <script src="js/app.js"></script>
+    <!-- Include the Maps JavaScript API with your key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAssygyGodfHzq9p0kTt7GKyEVkT-K-oxQ&libraries=places&callback=initMap" async defer></script>
+</body>
+</html>
